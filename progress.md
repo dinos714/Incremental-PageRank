@@ -58,3 +58,6 @@ conda create -n na_pr_env python=3.10
 conda activate na_pr_env
 pip install -r requirements.txt
 ```
+
+- `basic_implementation_power_method.py` 是一个静态 PageRank 的幂法实现，在小规模图上验证了其正确性。
+- 下一步需要用 CSR 等格式实现稀疏矩阵，并在更大规模的图上测试性能和正确性。
