@@ -12,7 +12,7 @@ PageRank 基于随机冲浪模型：用户以概率 $p$ 沿当前页面链接跳
 
 $$A = pGD + \vec{e}\vec{f}^T$$
 
-其中 $G$ 为邻接矩阵，$D$ 为出度倒数对角矩阵，$\vec{f}$ 处理悬挂节点。
+其中 $G$ 为邻接矩阵， $D$ 为出度倒数对角矩阵， $\vec{f}$ 处理悬挂节点。
 
 ### 扰动理论界
 
@@ -26,7 +26,7 @@ $$\|\Delta \vec{x}\|_1 \leq \frac{p}{1-p} \|\Delta \bar{M}\|_1$$
 .
 ├── src/
 │   ├── scripts/
-│   │   ├── static_textook_implementation_power_method.py  # 静态PageRank实现
+│   │   ├── static_textook_implementation_power_method.py   # 静态PageRank实现
 │   │   ├── warm_start.py                                   # 预热启动算法
 │   │   ├── local_push.py                                   # 本地推送算法
 │   │   ├── matrix_perturbation.py                          # 扰动分析脚本
@@ -98,7 +98,7 @@ bash src/scripts/run_sensitivity.sh
 ## 实验结果
 
 实验结果表明：
-- **Warm-Start** 和 **Local Push** 在小规模扰动下显著优于 Cold Start
+- Warm-Start 和 Local Push 在小规模扰动下显著优于 Cold Start
 - 当扰动比例较小时（<1%），增量算法的加速比可达数倍
 - 扰动界公式验证了理论分析与实际结果的一致性
 
