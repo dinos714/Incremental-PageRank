@@ -57,10 +57,11 @@ def build_components(edges, n_nodes, p):
             f[i] = (1-p)/n_nodes
         else:
             f[i] = 1/n_nodes
-    return G, D, e, f
+    v = e * 1/n_nodes
+    return G, D, e, f, v
 
 
-def power_method(A, n_nodes, max_iter=100, tol=1e-6):
+def power_method_adjacency_matrix_A(A, n_nodes, max_iter=100, tol=1e-6):
     x = np.random.rand(n_nodes)
     x /= np.linalg.norm(x, 1)
     for _ in range(max_iter):
@@ -72,11 +73,33 @@ def power_method(A, n_nodes, max_iter=100, tol=1e-6):
     return x
 
 
-def power_method_components(G, D, e, f, n_nodes, p, max_iter=100, tol=1e-6):
+def power_method_standard(G, D, e, f, n_nodes, p, max_iter=100, tol=1e-6):
     x = np.random.rand(n_nodes)
     x /= np.linalg.norm(x, 1)
     for _ in range(max_iter):
         x_new = p * G @ (D * x) + e * (f @ x)
+        x_new /= np.linalg.norm(x_new, 1)
+        if np.linalg.norm(x_new - x, 1) < tol:
+            break
+        x = x_new
+    return x
+
+
+'''
+    Use this when there is no dangling node.
+    A = pM + (1−p)evT
+        G = graph adjacency matrix
+        D = diagonal out-degree matrix
+        e = vector of ones
+        M = GD
+        v = e/n
+    x = pMx + (1-p)evTx
+'''
+def power_method_dangling_free(G, D, e, v, n_nodes, p, max_iter=100, tol=1e-6):
+    x = np.random.rand(n_nodes)
+    x /= np.linalg.norm(x, 1)
+    for _ in range(max_iter):
+        x_new = p * G @ (D * x) + (1-p) * e * (v @ x)
         x_new /= np.linalg.norm(x_new, 1)
         if np.linalg.norm(x_new - x, 1) < tol:
             break
@@ -101,7 +124,7 @@ def main(data_file_path, show_top_k=5, p=0.85, max_iter=100, tol=1e-6):
     print(f"\n[1] Running: Basic Implementation (Dense Matrix)...")
     start_time = time.time()
     A = build_adjacency_matrix(edges, n_nodes, p)
-    pagerank_vector = power_method(A, n_nodes, max_iter, tol)
+    pagerank_vector = power_method_adjacency_matrix_A(A, n_nodes, max_iter, tol)
     t1 = time.time() - start_time
     results.append(("Basic (Dense)", t1, pagerank_vector))
     print(f"    Done! Time: {t1:.4f}s")
@@ -109,8 +132,9 @@ def main(data_file_path, show_top_k=5, p=0.85, max_iter=100, tol=1e-6):
     # --- 2. Component-wise Implementation ---
     print(f"\n[2] Running: Component-wise Implementation (CSR Sparse)...")
     start_time = time.time()
-    G, D, e, f = build_components(edges, n_nodes, p)
-    pagerank_vector_comp = power_method_components(G, D, e, f, n_nodes, p, max_iter, tol)
+    G, D, e, f, v = build_components(edges, n_nodes, p)
+    pagerank_vector_comp = power_method_standard(G, D, e, f, n_nodes, p, max_iter, tol)
+    # pagerank_vector_comp = power_method_standard(G, D, e, v, n_nodes, p, max_iter, tol)
     t2 = time.time() - start_time
     results.append(("Component-wise (CSR)", t2, pagerank_vector_comp))
     print(f"    Done! Time: {t2:.4f}s")
@@ -142,7 +166,7 @@ def main(data_file_path, show_top_k=5, p=0.85, max_iter=100, tol=1e-6):
 
 if __name__ == '__main__':
     argparser = argparse.ArgumentParser(description='Basic Power Method PageRank Implementation')
-    argparser.add_argument('--data_file_path', type=str, default='./data/wiki-Vote.txt', help='Path to the data file')
+    argparser.add_argument('--data_file_path', type=str, default='./data/Wiki-Vote.txt', help='Path to the data file')
     argparser.add_argument('--show_top_k', type=int, default=5, help='Number of top nodes to display')
     argparser.add_argument('--p', type=float, default=0.85, help='Damping factor')
     args = argparser.parse_args()
