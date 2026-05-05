@@ -1,22 +1,22 @@
-# Progress records for incremental PageRank project
+# PROGRESS RECORDS FOR INCREMENTAL PAGERANK PROJECT 
 
-<center>Haopeng Zhang</center>
+<center>Haopeng Zhang</center> 
 
-<center>Using dataset: [wiki-Vote from stanford](https://snap.stanford.edu/data/wiki-Vote.html).</center>
+<center>Using dataset: <a href="https://snap.stanford.edu/data/wiki-Vote.html">Wiki-Vote from stanford</a></center>
 
 <center>A python implementation of incremental PageRank Algorithm</center>
 
-## Step 1: Theoretical Understanding of PageRank
 
-### PageRank
 
-#### *Background*
+## Theoretical Understanding of PageRank
+
+### Background
 
 1998 年，斯坦福大学的博士生 Larry Page 和 Sergey Brin 创立了 Google 公司，其核心技术是通过 PageRank 技术对海量数据进行分析，利用网页相互连接的关系对网页进行组织，确定出每个网页的重要级别（PageRank）。当用户检索时，Google 找到符合要求的网页并按照他们的重要级别排序并以此向用户列出，这使得用户可以在前几条检索结果就找到需要的结果。对重要级别的直观理解是：如果网页 A 中存在一条链接指向网页 B，就认为网页 A 给网页 B 投了一票。因此，被链接的网页的重要级别与链接它的网页的重要级别相关，换句话说，如果网页 A 的重要级别是高的，那么网页 B 的重要级别也相应的是高的。
 
 PageRank 成为了高效搜索的主要手段。在互联网的广泛使用下，PageRank 保证人们在生产、生活中获取信息的效率，并且在网络信息量日渐增长的时代中发挥着不可或缺的作用。
 
-#### *Mathematical Modeling*
+### Mathematical Modeling
 
 对于有 $n$ 个网页的网络，定义 $n\times n$ 的邻接矩阵 $G=(g_{ij})\in\mathbb{R}^{n\times n}$，若网页 $j$ 有一个链接到网页 $i$，则 $g_{ij}=1$，否则 $g_{ij}=0$。$c_j = \sum_{i=1}^{n}g_{ij}$ 称为网页 $j$ 的出度，即从网页 $j$ 出发的链接的总数，类似的 $r_i=\sum_{j=1}^{n}g_{ij}$ 称为网页 $i$ 的入度，即指向网页 $i$ 的链接总数。
 
@@ -58,11 +58,11 @@ A=pGD+\vec e\vec f^T
 
 设 $\vec x^{(k)}$ 是 $k$ 时刻访问各个网页的概率分布（$\sum_{i} x^{(k)}_i=1$），那么下一时刻浏览各个网页的概率分布就是 $\vec x^{(k+1)}=A\vec x^{(k)}$。当这个过程无限进行下去，达到极限情况，即网页访问概率收敛到一个极限值，这个极限向量 $\vec x$ 就是各个网页的 PageRank，它满足 $A\vec x=\vec x$，且 $\sum_{i}x_i=1$。
 
-#### *Power Method*
+### Power Method
 
 幂法是求解大规模系数矩阵的主特征向量的可靠、唯一的选择。
 
-#### *Theoretical Bound of Network Perturbation*
+### Theoretical Bound of Network Perturbation
 
 PageRank 向量 $\vec x$ 满足 $\sum_{i}^n x_i=1$（即 $\vec{e}^T\vec{x}=1$），且 $A\vec x=\vec x$。
 
@@ -100,7 +100,7 @@ A = pGD + \vec{e}\left(\frac{1-p}{n}\vec{e}^T + \frac{p}{n}\vec{d}^T\right) = p\
 \end{align}
 ```
 
-取 l~1~ 范数，有
+取 L~1~ 范数，有
 
 ```math
 \begin{align}
@@ -115,15 +115,15 @@ A = pGD + \vec{e}\left(\frac{1-p}{n}\vec{e}^T + \frac{p}{n}\vec{d}^T\right) = p\
 \end{align}
 ```
 
-综上，当真正的列随机转移矩阵发生扰动 $\Delta \bar{M}$ 时，PageRank 向量的变化有如下界限：
+综上，当列随机转移矩阵发生扰动 $\Delta \bar{M}$ 时，PageRank 向量的变化有如下界限：
 
 ```math
 \|\Delta \vec{x}\|_1 \leq \frac{p}{1-p} \|\Delta \bar{M}\|_1
 ```
 
----
 
-## Step 2: Environment Setup and Implementation of Static PageRank
+
+## Environment Setup and Implementation of Static PageRank
 
 用这些命令来配置环境：
 
@@ -153,73 +153,73 @@ pip install -r requirements.txt
 
   - 在 Wiki-Vote 的 7115 个节点 + 103689 条有向边的网络拓扑下进行测试，全量保存矩阵 $A$ 的计算过程所花费的时间要远远超过用 CSR 格式实现的稀疏矩阵的存储和计算，两种方法的具体表现和差异如下：
 
-    ```bash
-    python src/scripts/static_textook_implementation_power_method.py --data_file_path ./data/Wiki-Vote.txt
-    
-    ============================================================
-                    PAGERANK COMPUTATION REPORT                 
-    ============================================================
-    [*] Data Source  : ./data/Wiki-Vote.txt
-    [*] Nodes        : 7115
-    [*] Edges        : 103689
-    [*] Parameters   : p=0.85, tol=1e-06
-    ------------------------------------------------------------
-    
-    [1] Running: Basic Implementation (Dense Matrix)...
-        Done! Time: 2.6537s
-    
-    [2] Running: Component-wise Implementation (CSR Sparse)...
-        Done! Time: 0.0164s
-    
-    ############################################################
-      METHOD: Basic (Dense)
-      Execution Time: 2.6537 seconds
-    ############################################################
-    
-      Top 5 Ranking:
-      -----------------------------------
-      Rank     | Node ID    | Score     
-      -----------------------------------
-      1        | 327        | 0.004607
-      2        | 410        | 0.003680
-      3        | 1333       | 0.003587
-      4        | 712        | 0.003284
-      5        | 906        | 0.002609
-      -----------------------------------
-    
-      Vector Preview:[0.0002, 0.0008, 0.0018, 0.0022 ... 0.0001, 0.0001, 0.0001, 0.0001]
-    
-    
-    ############################################################
-      METHOD: Component-wise (CSR)
-      Execution Time: 0.0164 seconds
-    ############################################################
-    
-      Top 5 Ranking:
-      -----------------------------------
-      Rank     | Node ID    | Score     
-      -----------------------------------
-      1        | 327        | 0.004607
-      2        | 410        | 0.003680
-      3        | 1333       | 0.003587
-      4        | 712        | 0.003284
-      5        | 906        | 0.002609
-      -----------------------------------
-    
-      Vector Preview:[0.0002, 0.0008, 0.0018, 0.0022 ... 0.0001, 0.0001, 0.0001, 0.0001]
-    
-    ============================================================
-                           END OF REPORT                        
-    ============================================================
-    ```
+```bash
+python src/scripts/static_textook_implementation_power_method.py --data_file_path ./data/Wiki-Vote.txt
 
----
+============================================================
+                PAGERANK COMPUTATION REPORT                 
+============================================================
+[*] Data Source  : ./data/Wiki-Vote.txt
+[*] Nodes        : 7115
+[*] Edges        : 103689
+[*] Parameters   : p=0.85, tol=1e-06
+------------------------------------------------------------
 
-## Step3: Incremental PageRank Algorithm
+[1] Running: Basic Implementation (Dense Matrix)...
+    Done! Time: 2.6537s
 
-#### *Warm-Start PageRank*
+[2] Running: Component-wise Implementation (CSR Sparse)...
+    Done! Time: 0.0164s
 
-当网络结构发生扰动的时候，教材中提到了一种能够相较于随机化初始向量并重新执行幂法更快的方法是，使用扰动前得到的 PageRank 向量作为扰动后幂法的初始值，实验证明在 Wiki-Vote 数据集上，增添和删除边的比例在 0.1% 的情况下，Warm-Start 方法达到收敛所需要的迭代次数和迭代时间，较随机初始化向量进行幂法迭代均有下降，且迭代结果差异极小，可忽略不计。
+############################################################
+  METHOD: Basic (Dense)
+  Execution Time: 2.6537 seconds
+############################################################
+
+  Top 5 Ranking:
+  -----------------------------------
+  Rank     | Node ID    | Score     
+  -----------------------------------
+  1        | 327        | 0.004607
+  2        | 410        | 0.003680
+  3        | 1333       | 0.003587
+  4        | 712        | 0.003284
+  5        | 906        | 0.002609
+  -----------------------------------
+
+  Vector Preview:[0.0002, 0.0008, 0.0018, 0.0022 ... 0.0001, 0.0001, 0.0001, 0.0001]
+
+
+############################################################
+  METHOD: Component-wise (CSR)
+  Execution Time: 0.0164 seconds
+############################################################
+
+  Top 5 Ranking:
+  -----------------------------------
+  Rank     | Node ID    | Score     
+  -----------------------------------
+  1        | 327        | 0.004607
+  2        | 410        | 0.003680
+  3        | 1333       | 0.003587
+  4        | 712        | 0.003284
+  5        | 906        | 0.002609
+  -----------------------------------
+
+  Vector Preview:[0.0002, 0.0008, 0.0018, 0.0022 ... 0.0001, 0.0001, 0.0001, 0.0001]
+
+============================================================
+                       END OF REPORT                        
+============================================================
+```
+
+
+
+## Incremental PageRank Algorithm
+
+### Warm-Start PageRank
+
+当网络结构发生扰动的时候，教材中提到了一种能够相较于随机化初始向量并重新执行幂法更快的方法是，使用扰动前得到的 PageRank 向量作为扰动后幂法的初始值。实验证明在 Wiki-Vote 数据集上，增添和删除边的比例在 0.1% 的情况下，Warm-Start 方法达到收敛所需要的迭代次数和迭代时间，较随机初始化向量进行幂法迭代均有下降，且迭代结果差异极小，可忽略不计。
 
 ```bash
 python src/scripts/warm_start.py
@@ -289,16 +289,24 @@ Conclusion:
 ============================================================
 ```
 
-> [!NOte]
->
-> 为啥warm-start是管用的呢？
+幂法求解主特征向量时，其所需的迭代次数直接取决于初始向量 $\vec x^{0}$ 和 目标向量 $\vec x^*$ 之间的距离（通常用 L~1~ 范数衡量）初始差距越小，达到给定容差 $\epsilon$ 所需的迭代次数越少。根据矩阵扰动理论，当网络结构发生微小变化（如少量边的增删）时，新的转移矩阵对应的平稳分布向量 $\vec x_{new}$ 与旧向量 $\vec x_{old}$ 之间的差值界限极小。冷启动使用随机初始化的向量，需要经历完整的收敛过程，而 Warm-Start 方法直接将 $\vec x_{old}$ 作为新矩阵迭代的初始向量，由于 $\vec x_{old}$ 在数值上已经极其接近目标向量，Warm-Start 方法直接消除了绝大部分初始误差，使得算法仅需极少次数的迭代即可满足停止条件。
 
-#### *Residual Push PageRank*
+### Local Push PageRank
 
-一种增量式算法。
+一种增量式算法，基于 Gauss-Southwell 算法求解线性系统的迭代方法。具体机制包含四个步骤：
+
+- 初始状态：网络拓扑改变后，设新转移矩阵为 $A_{new}$ 并将旧的 PageRank 向量赋给 $\vec x$，计算初始残差 $\vec r=A_{new}\vec x-\vec x$。
+- 迭代步骤：
+  1. 在残差向量 $\vec r$ 中选择一个满足 $|r_i|>\epsilon$ 的节点 $i$；
+  2. 将节点 $i$ 的残差累加到它的 PageRank 值中 $x_i \leftarrow x_i+r_i$；
+  3. 将节点 $i$ 的残差沿其出边按比例分配给下游邻居 $j$ $r_j\leftarrow r_j+p\frac{r_i}{c_i}$；
+  4. 将节点 $i$ 的残差重置为零 $r_i\leftarrow 0$；
+- 当残差向量 $\vec r$ 中所有元素的绝对值均小于或等于容差 $\epsilon$ 时，算法停止。
+
+可以看到对比方法一（随机初始化并重新执行幂法），local push 算法在迭代次数和计算时间上均有显著提升，尽管相较于方法二（Warm-Start），local push 算法的提升较小，但仍然在保证 PageRank 结果一致的前提下，展现了效率上的进步。
 
 ```bash
-python src/scripts/local_push.py
+python src/scripts/local_push.py 
 
 ============================================================
            INCREMENTAL PAGERANK SCALABILITY TEST            
@@ -313,89 +321,172 @@ python src/scripts/local_push.py
 [*] 3/3 Running PageRank Updates...
 
 [1] Cold Restart (Scratch)
-    -> Iters: 026 | Time: 0.004044s
+    -> Iters: 026 | Time: 0.004029s
 
 [2] Warm-Start (Old x as Init)
-    -> Iters: 016 | Time: 0.002506s
+    -> Iters: 018 | Time: 0.002950s
 
-[3] Residual Push
-    -> Iters: 015 | Time: 0.002183s
+[3] Local Push
+    -> Iters: 017 | Time: 0.002605s
+
+############################################################
+  METHOD: Cold Start
+  Execution Time: 0.004029 seconds
+  Iterations    : 26
+############################################################
+
+  Top 5 Ranking:
+  -----------------------------------
+  Rank     | Node ID    | Score     
+  -----------------------------------
+  1        | 327        | 0.004607
+  2        | 410        | 0.003680
+  3        | 1333       | 0.003584
+  4        | 712        | 0.003283
+  5        | 906        | 0.002608
+  -----------------------------------
+
+  Vector Preview:
+  [0.0002, 0.0008, 0.0018, 0.0021 ... 0.0001, 0.0001, 0.0001, 0.0001]
+
+
+############################################################
+  METHOD: Warm-Start
+  Execution Time: 0.002950 seconds
+  Iterations    : 18
+############################################################
+
+  Top 5 Ranking:
+  -----------------------------------
+  Rank     | Node ID    | Score     
+  -----------------------------------
+  1        | 327        | 0.004607
+  2        | 410        | 0.003680
+  3        | 1333       | 0.003584
+  4        | 712        | 0.003283
+  5        | 906        | 0.002608
+  -----------------------------------
+
+  Vector Preview:
+  [0.0002, 0.0008, 0.0018, 0.0021 ... 0.0001, 0.0001, 0.0001, 0.0001]
+
+
+############################################################
+  METHOD: Local Push
+  Execution Time: 0.002605 seconds
+  Iterations    : 17
+############################################################
+
+  Top 5 Ranking:
+  -----------------------------------
+  Rank     | Node ID    | Score     
+  -----------------------------------
+  1        | 327        | 0.004607
+  2        | 410        | 0.003680
+  3        | 1333       | 0.003584
+  4        | 712        | 0.003283
+  5        | 906        | 0.002608
+  -----------------------------------
+
+  Vector Preview:
+  [0.0002, 0.0008, 0.0018, 0.0021 ... 0.0001, 0.0001, 0.0001, 0.0001]
+
 
 ============================================================
-[*] Check ||Cold - Warm||_1: 1.2144e-09
-[*] Check ||Cold - Vec||_1 : 1.2144e-09
+[*] Check ||Cold - Warm||_1: 8.0593e-10
+[*] Check ||Cold - Local||_1 : 8.0593e-10
 ------------------------------------------------------------
-[*] Warm-Start Speedup   : 1.61x
-[*] Residual Push Speedup: 1.85x
+[*] Warm-Start Speedup: 1.37x
+[*] Local Push Speedup: 1.55x
 ============================================================
-                       END OF TEST                        
+                        END OF TEST                         
 ============================================================
 ```
 
-> [!Note]
->
-> 为啥residual push算法是管用的呢？
+当图仅发生少量边变动时，初始残差 $\vec r=A_{new}\vec x-\vec x$ 的计算结果中，绝大多数节点的残差严格为零。非零残差仅出现在发生拓扑变动的节点及其直接邻居处。传统的全局幂法每次迭代都需要执行完整的矩阵向量乘法，其时间复杂度为 $O(|V|+|E|)$ 与全网规模绑定。而 Local Push 的每次单点更新操作复杂度仅为 $O(c_i)$。算法只在非零残差的局部子图中进行计算，直接跳过了未受影响的区域。在每次 Push 操作中，被传递的残差总和会乘以 $p$，这意味着每执行一次推送，系统总残差的绝对值会严格损失 $1-p$ 的比例。残差的快速收敛保证了活跃节点队列会迅速变空。Local Push 将计算复杂度从依赖全图规模转换为严格依赖实际发生变动的局部规模与给定的精度要求。在图变动比例较小的情况下，Local Push 方法能显著减少总体的浮点运算次数。
 
----
 
-## Step4:  Experiments Design
 
-TODO
+## Experiments Design
 
----
+### Theoretical Bound Verification
 
-## Step5: Results Analysis & Discussion
+实验验证在实际操作中，理论上界$||\Delta \vec{x}||_1 \leq \frac{p}{1-p} ||\Delta \bar{M}||_1$是否成立，以及它到底有多紧密。
 
-#### *Perturbation*
+* 自变量：网络结构的扰动比例（同时或分别控制 `--add_ratio` 和 `--drop_ratio`，从极小值如 $10^{-4}$ 逐渐增大到 $10^{-1}$）。
+* 因变量：记录实际排名误差 $||\Delta \vec{x}||_1$，并计算对应扰动下的理论上界 $\frac{p}{1-p} ||\Delta \bar{M}||_1$。
+* 可视化：绘制横轴为扰动比例、纵轴为 L1 范数对数坐标的双折线图。
+
+### Performance & Scalability
+目前的增量算法（Warm-Start 和 Residual Push）在不同的扰动规模下相对 Cold Start 的加速比可能会发生变化。
+* 自变量：网络扰动比例（例如：$0.01\%, 0.05\%, 0.1\%, 0.5\%, 1\%, 5\%, 10\%$）。
+* 因变量：收敛所需的迭代次数 (Iterations)、运行时间 (Execution Time) 以及加速比 (Speedup)。
+* 实验预期：在微小扰动下，Residual Push 和 Warm-Start 应该表现出巨大的速度优势。随着扰动比例增大，旧的向量作为初始状态/残差向量不再那么“精准”，增量算法的速度优势应该会逐渐衰减甚至退化。这能帮你探讨算法的适用范围。
+* 编写一个批量测算的脚本 `run_performance_experiments.sh`，自动收集不同扰动比例下的运行数据并生成折线图。
+
+### Parameter Sensitivity
+除了网络结构的变化，PageRank 本身的超参数对于迭代收敛速度也有显著影响。
+* 阻尼系数 $p$：如 0.70, 0.85, 0.90, 0.95。
+  * 分析：$p$ 越接近 1，普通幂法的收敛速度越慢。此时，增量算法能在多大程度上缓解因大 $p$ 导致的严重性能开销？
+* 收敛容忍度 $\epsilon$：如 $10^{-6}, 10^{-9}, 10^{-12}$。
+  * 分析：在高精度要求下，Local Push 是否仍能保持稳定的加速比？
+
+
+
+## Results Analysis & Discussion
+
+### Perturbation
 
 实验发现，经典的一阶近似扰动界限 $\|\Delta \vec{x}\|_1 \leq \frac{p}{1-p} \|\Delta \bar{M}\|_1$ 在真实网络中表现出极强的保守性。下图中，当我们以一定的比例增添边（固定删除边的比例）时，可以观察到橙色折线，也就是理论的扰动误差上界 $\frac{p}{1-p} \|\Delta \bar{M}\|_1$，远高于蓝色的真实变化量折线。如果我们按一定比例删除边（固定增添边的比例），上述结果仍然成立。事实上，当我们以一定比例增添和删除网络中的边时，橙色线（理论上界）几乎平稳在 11.33 左右，这背后有严密的数学必然性：对于列随机矩阵，其任意一列的绝对值变化总和 $\|\Delta \bar{M}\|_1$ 最大不可能超过 2，当固定 $p=0.85$ 的时候，理论上界最大值刚好是 $\frac{0.85}{0.15}\times2\approx11.33$。
 
-<img src="./results/matrix_perturbation_add_ratio_results.png" alt="image-20260505112657105" style="zoom: 50%;" />
+![image-20260505214755253](./results/matrix_perturbation_merged.png)
 
-#### *Whatever*
+### Performance & Scalability
+
+我固定 $p=0.85$ 和 $\epsilon=10^{-9}$，测试了不同网络扰动比例下，不同迭代方法到达收敛所需的迭代次数 (Iterations)、运行时间 (Execution Time) 以及 Warm-Start 和 Local Push 算法相对于重新执行幂法的加速比 (Speedup)。实验数据展示了不同 PageRank 计算策略在不同规模网络扰动下的性能表现及其适用边界。具体分析如下：
+
+1. 低扰动区间内的增量计算优势
+
+   在网络拓扑变动比例较低（$0.01\% \sim 0.1\%$）时，Warm-Start 与 Local Push 所需的收敛迭代次数显著低于 Cold Start，对应的绝对运行时间也大幅降低。这一结果验证了前期推导的矩阵扰动理论：微小的转移矩阵扰动（较小的 $\|\Delta \bar{M}\|_1$）仅会产生极小的新旧 PageRank 向量偏差和极稀疏的初始残差。Warm-Start 和 Local Push 算法有效跳过了大量的全局冗余迭代。
+
+2. 增量加速比的衰减规律与边界
+
+   图3直观地反映了增量算法的性能红利严格受制于网络变动规模。随着随机加删边比例的增大，系统的初始残差总量增加，旧状态与新平稳分布的距离拉大。因此，Warm-Start 和 Local Push 的加速比呈现出明显的阶梯式下降趋势。这说明增量式 PageRank 的适用场景是高频且微小的网络局部更新。当拓扑结构变动越过一定比例阈值时，增量式算法的时间收益会不断递减，最终趋近于全局重算。
+
+3. 拓扑剧变下的矩阵谱特性影响与鲁棒性
+
+  在折线图的右侧（较高扰动比例处），三条曲线出现了一个同步的迭代激增峰值（逼近80次）。这可能是因为大规模的随机增删边操作破坏了原图的结构属性（例如改变了图的强连通分量分布，或缩小了转移矩阵第一与第二特征值之间的谱间隙），导致马尔可夫链的收敛难度全局性增加。但从数据可以看出，即便在这一极端不利的图结构下，Warm-Start 和 Local Push 的迭代次数与时间依然没有超过 Cold-Start，这证明了这两种增量实现方案在任何情况下都能保证不劣于全局重算的理论下限。
+
+实验数据支撑了本项目的研究目标：对于真实演化的动态网络，利用向量化实现的增量式算法（特别是 Local Push 算法）能够显著加速 PageRank 的更新效率；但其核心前提是每次处理的拓扑扰动必须处于较低的比例范围内。
+
+![image-20260505214317647](./results/performance_and_scalability.png)
+
+### Parameter Sensitivity
+
+为了进一步深化了对增量式 PageRank 算法性能边界的理解，我进行了超参数敏感性的相关实验。通过固定网络结构变化在 0.1% 并对阻尼系数 $p$ 和收敛容忍度 $\epsilon$ 的交叉分析，可以得出以下结论：
+
+1. 阻尼系数 $p$ 对收敛性的主导作用：
+
+   实验结果验证了幂法收敛率由转移矩阵的谱间隙（Spectral Gap）决定的理论。随着 $p$ 从 0.70 增加到 0.95，所有算法的迭代次数和运行时间均呈现显著上升趋势。这是因为 $p$ 越接近 1，马尔可夫链的非主特征值对收敛的阻碍越强。
+
+   *   增量算法的鲁棒性：在 $p$ 逐渐增大的过程中，Warm-Start 和 Local Push 始终保持在 Cold Start 曲线下方。
+
+   *   加速比的非线性波动：值得注意的是，加速比在 $p=0.90$ 处达到峰值（Local Push 接近 1.45x），但在 $p=0.95$ 时迅速回落。这说明在极高阻尼系数下，系统对拓扑扰动的敏感度极高，即使初始点距离真解很近，由于搜索空间的平坦性，微调所需的代价也开始逼近全局计算。
 
 
+2. 容忍度 $\epsilon$ 对高精度更新的支撑：
 
----
+   实验结果清晰地展示了计算精度与算力开销之间的对数线性关系。
 
-> [!Note]
->
-> 1. PageRank 及其数值算法基础
->
-> - PageRank 原理与公式推导（Google 原论文、教材相关章节）
-> - 幂法（Power Iteration）在 PageRank 中的应用
-> - 稀疏矩阵存储与高效乘法（CSR/CSC 格式）
->
-> 2. 图论与网络科学
->
-> - 有向图的基本性质（强连通分量、悬挂节点等）
-> - 真实网络的统计特性（如度分布、幂律分布、小世界现象）
-> - 网络数据集的常见格式与解析方法（如 SNAP 格式）
->
-> 3. 矩阵扰动理论与灵敏度分析
->
-> - 矩阵扰动理论基础（如 Bauer-Fike 定理、谱半径扰动界）
-> - PageRank 向量对转移矩阵扰动的敏感性分析
-> - 残差与误差界的推导方法
->
-> 4. 增量式/动态 PageRank 算法
->
-> - 增量式 PageRank 的基本思想与主流算法（如 Online PageRank、Dynamic PageRank）
-> - 残差驱动的增量迭代方法
-> - 动态网络下的高效数据结构与实现技巧
->
-> 5. 工程实现与实验设计
->
-> - 大规模稀疏图的高效存储与处理（如 NetworkX、SciPy.sparse）
-> - 性能分析与优化（如向量化、并行化、内存管理）
-> - 实验设计与数据可视化（如对比实验、误差分析、可视化工具 matplotlib/seaborn）
->
-> 6. 论文阅读与前沿进展
->
-> - 经典 PageRank 相关论文（Google 原论文、增量 PageRank 相关文献）
-> - 近期动态网络与增量算法的研究进展（可检索 arXiv、Google Scholar）
->
-> ---
->
-> **建议学习顺序**：
-> PageRank 基础 → 图论与网络科学 → 矩阵扰动理论 → 增量式 PageRank → 工程实现 → 论文阅读与前沿进展
+   *   Local Push 的精度稳定性：在 $10^{-6}$ 到 $10^{-12}$ 的跨度内，Local Push 在迭代次数和运行时间上始终表现最优。
+
+   *   加速比的趋势分化：随着精度要求从 $10^{-6}$ 提高到 $10^{-12}$，Warm-Start 的加速比呈现下降趋势，而 Local Push 的加速比在经历中段波动后在 $10^{-12}$ 处反弹，表现出更好的高精度适应性。这证明了基于残差传播的 Local Push 能够更精细地捕捉并消除由于拓扑扰动产生的微小概率偏差。
+
+
+3. 算法工程特性的综合评价：
+
+   Local Push 的向量化残差推送算法在参数变化面前展现了极佳的工程灵活性。相比于简单的 Warm-Start，Local Push 不仅仅利用了旧的状态，更通过直接操作残差向量，使得它在处理高阻尼系数带来的慢收敛和高容忍度带来的长尾收敛问题时，拥有比传统幂法更高的搜索效率。
+
+实验数据表明，增量式算法（特别是 Local Push）在阻尼系数适中（约0.85-0.90）**且**精度要求较高（$10^{-12}$）的动态网络更新场景中具有最强的竞争力。这契合实际工业界对 PageRank 实时性与准确性的双重需求。与此同时，在 $p$ 极高或扰动过大的极端情况下，系统本身的数值不稳定性使增量算法的边际收益受到压缩。
+
+![image-20260505224905313](./results/sensitivity.png)

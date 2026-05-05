@@ -1,0 +1,172 @@
+[
+  {
+    "perturbation_percent": "0.01%",
+    "perturbation_ratio": 0.00001,
+    "cold_start": {
+      "iterations": 26,
+      "execution_time_sec": 0.003962
+    },
+    "warm_start": {
+      "iterations": 16,
+      "execution_time_sec": 0.002227,
+      "speedup": 1.78
+    },
+    "local_push": {
+      "iterations": 15,
+      "execution_time_sec": 0.002321,
+      "speedup": 1.71
+    }
+  }
+,
+  {
+    "perturbation_percent": "0.05%",
+    "perturbation_ratio": 0.00005,
+    "cold_start": {
+      "iterations": 26,
+      "execution_time_sec": 0.003777
+    },
+    "warm_start": {
+      "iterations": 17,
+      "execution_time_sec": 0.002308,
+      "speedup": 1.64
+    },
+    "local_push": {
+      "iterations": 16,
+      "execution_time_sec": 0.002077,
+      "speedup": 1.82
+    }
+  }
+,
+  {
+    "perturbation_percent": "0.1%",
+    "perturbation_ratio": 0.0001,
+    "cold_start": {
+      "iterations": 26,
+      "execution_time_sec": 0.003547
+    },
+    "warm_start": {
+      "iterations": 18,
+      "execution_time_sec": 0.002417,
+      "speedup": 1.47
+    },
+    "local_push": {
+      "iterations": 17,
+      "execution_time_sec": 0.002288,
+      "speedup": 1.55
+    }
+  }
+,
+  {
+    "perturbation_percent": "0.5%",
+    "perturbation_ratio": 0.0005,
+    "cold_start": {
+      "iterations": 26,
+      "execution_time_sec": 0.003774
+    },
+    "warm_start": {
+      "iterations": 20,
+      "execution_time_sec": 0.002733,
+      "speedup": 1.38
+    },
+    "local_push": {
+      "iterations": 19,
+      "execution_time_sec": 0.002547,
+      "speedup": 1.48
+    }
+  }
+,
+  {
+    "perturbation_percent": "1%",
+    "perturbation_ratio": 0.001,
+    "cold_start": {
+      "iterations": 26,
+      "execution_time_sec": 0.003553
+    },
+    "warm_start": {
+      "iterations": 22,
+      "execution_time_sec": 0.003100,
+      "speedup": 1.15
+    },
+    "local_push": {
+      "iterations": 21,
+      "execution_time_sec": 0.002796,
+      "speedup": 1.27
+    }
+  }
+,
+  {
+    "perturbation_percent": "5%",
+    "perturbation_ratio": 0.005,
+    "cold_start": {
+      "iterations": 26,
+      "execution_time_sec": 0.003799
+    },
+    "warm_start": {
+      "iterations": 22,
+      "execution_time_sec": 0.003031,
+      "speedup": 1.25
+    },
+    "local_push": {
+      "iterations": 21,
+      "execution_time_sec": 0.002901,
+      "speedup": 1.31
+    }
+  }
+,
+  {
+    "perturbation_percent": "10%",
+    "perturbation_ratio": 0.01,
+    "cold_start": {
+      "iterations": 80,
+      "execution_time_sec": 0.011295
+    },
+    "warm_start": {
+      "iterations": 79,
+      "execution_time_sec": 0.010903,
+      "speedup": 1.04
+    },
+    "local_push": {
+      "iterations": 78,
+      "execution_time_sec": 0.010085,
+      "speedup": 1.12
+    }
+  }
+,
+  {
+    "perturbation_percent": "",
+    "perturbation_ratio": 0.05,
+    "cold_start": {
+      "iterations": 26,
+      "execution_time_sec": 0.003939
+    },
+    "warm_start": {
+      "iterations": 24,
+      "execution_time_sec": 0.003546,
+      "speedup": 1.11
+    },
+    "local_push": {
+      "iterations": 23,
+      "execution_time_sec": 0.003321,
+      "speedup": 1.19
+    }
+  }
+,
+  {
+    "perturbation_percent": "",
+    "perturbation_ratio": 0.1,
+    "cold_start": {
+      "iterations": 29,
+      "execution_time_sec": 0.005006
+    },
+    "warm_start": {
+      "iterations": 28,
+      "execution_time_sec": 0.004108,
+      "speedup": 1.22
+    },
+    "local_push": {
+      "iterations": 27,
+      "execution_time_sec": 0.003785,
+      "speedup": 1.32
+    }
+  }
+]

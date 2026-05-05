@@ -1,0 +1,60 @@
+{
+  "p_sensitivity":[
+    {
+      "p": 0.70,
+      "tol": 1e-9,
+      "cold_start": { "iterations": 20, "execution_time_sec": 0.002947 },
+      "warm_start": { "iterations": 17, "execution_time_sec": 0.002534, "speedup": 1.16 },
+      "local_push": { "iterations": 16, "execution_time_sec": 0.002342, "speedup": 1.26 }
+    }
+    ,
+    {
+      "p": 0.85,
+      "tol": 1e-9,
+      "cold_start": { "iterations": 26, "execution_time_sec": 0.003979 },
+      "warm_start": { "iterations": 20, "execution_time_sec": 0.003237, "speedup": 1.23 },
+      "local_push": { "iterations": 19, "execution_time_sec": 0.002843, "speedup": 1.40 }
+    }
+    ,
+    {
+      "p": 0.90,
+      "tol": 1e-9,
+      "cold_start": { "iterations": 29, "execution_time_sec": 0.004454 },
+      "warm_start": { "iterations": 23, "execution_time_sec": 0.003532, "speedup": 1.26 },
+      "local_push": { "iterations": 22, "execution_time_sec": 0.003072, "speedup": 1.45 }
+    }
+    ,
+    {
+      "p": 0.95,
+      "tol": 1e-9,
+      "cold_start": { "iterations": 31, "execution_time_sec": 0.004636 },
+      "warm_start": { "iterations": 24, "execution_time_sec": 0.004123, "speedup": 1.12 },
+      "local_push": { "iterations": 23, "execution_time_sec": 0.004165, "speedup": 1.11 }
+    }
+  ],
+  "tol_sensitivity": [
+    {
+      "p": 0.85,
+      "tol_str": "1e-6",
+      "cold_start": { "iterations": 18, "execution_time_sec": 0.002780 },
+      "warm_start": { "iterations": 16, "execution_time_sec": 0.002228, "speedup": 1.25 },
+      "local_push": { "iterations": 15, "execution_time_sec": 0.002190, "speedup": 1.27 }
+    }
+    ,
+    {
+      "p": 0.85,
+      "tol_str": "1e-9",
+      "cold_start": { "iterations": 26, "execution_time_sec": 0.003776 },
+      "warm_start": { "iterations": 22, "execution_time_sec": 0.003083, "speedup": 1.22 },
+      "local_push": { "iterations": 21, "execution_time_sec": 0.003237, "speedup": 1.17 }
+    }
+    ,
+    {
+      "p": 0.85,
+      "tol_str": "1e-12",
+      "cold_start": { "iterations": 37, "execution_time_sec": 0.005422 },
+      "warm_start": { "iterations": 34, "execution_time_sec": 0.004926, "speedup": 1.10 },
+      "local_push": { "iterations": 33, "execution_time_sec": 0.004386, "speedup": 1.24 }
+    }
+  ]
+}
