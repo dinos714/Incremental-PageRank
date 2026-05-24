@@ -2,7 +2,7 @@
 
 <center>Haopeng Zhang</center> 
 
-<center>Using dataset: <a href="https://snap.stanford.edu/data/wiki-Vote.html">Wiki-Vote from stanford</a></center>
+<center>Using dataset: <a href="https://snap.stanford.edu/data/wiki-Vote.html">Wiki-Vote from Stanford</a></center>
 
 <center>A python implementation of incremental PageRank Algorithm</center>
 
